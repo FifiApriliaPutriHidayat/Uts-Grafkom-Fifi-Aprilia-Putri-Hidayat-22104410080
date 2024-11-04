@@ -1,0 +1,119 @@
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(220);
+}
+let timeOfDay = 'day'; // 'day' atau 'night'
+let birdX = 0; // Posisi horizontal awal burung
+let birdY = 200; // Posisi vertical burung
+
+function setup() {
+  createCanvas(800, 600);
+  setInterval(changeTimeOfDay, 5000); // Ganti antara siang dan malam setiap 5 detik
+}
+
+function draw() {
+  drawBackground();
+  drawSunOrMoon();
+  drawMountains();
+  drawGround(); // Menggambar tanah
+  drawRoad();
+  drawClouds();
+  drawBirds();
+  moveBirds();
+}
+
+function changeTimeOfDay() {
+  timeOfDay = (timeOfDay === 'day') ? 'night' : 'day';
+}
+
+function drawBackground() {
+  if (timeOfDay === 'day') {
+    background(135, 206, 235); // Langit biru muda
+  } else {
+    background(25, 45, 92); // Langit malam biru tua
+  }
+}
+
+function drawSunOrMoon() {
+  if (timeOfDay === 'day') {
+    fill(255, 223, 0); // Matahari
+  } else {
+    fill(255, 255, 224); // Bulan
+  }
+  ellipse(width / 2, 90, 80, 80);
+}
+
+function drawMountains() {
+  fill(34, 139, 34);
+  // Gunung kiri
+  triangle(100, 400, 250, 150, 400, 400);
+  // Gunung tengah
+  triangle(300, 400, 500, 100, 700, 400);
+  
+}
+
+function drawGround() {
+  fill(139, 69, 19); // Coklat untuk tanah
+  noStroke();
+  rect(0, 400, width, 200); // Menggambar tanah di bawah gunung
+}
+
+function drawRoad() {
+  fill(50);
+  beginShape();
+  vertex(375, 400); // atas jalan mengecil
+  vertex(425, 400);
+  vertex(550, 600); // bawah jalan melebar
+  vertex(250, 600);
+  endShape(CLOSE);
+
+  // Garis tengah jalan
+  stroke(255);
+  strokeWeight(5);
+  for (let i = 0; i < 20; i++) {
+    let y1 = lerp(400, 600, i / 20);
+    let y2 = lerp(400, 600, (i + 1) / 20);
+    let x1 = lerp(400, 375, i / 20);
+    let x2 = lerp(400, 425, i / 20);
+    line(x1, y1, x2, y2);
+  }
+}
+
+function drawClouds() {
+  fill(255);
+  noStroke();
+
+  // Awan kiri
+  ellipse(150, 100, 80, 60);
+  ellipse(190, 100, 100, 70);
+  ellipse(220, 80, 90, 60);
+
+  // Awan kanan
+  ellipse(550, 130, 90, 60);
+  ellipse(600, 140, 110, 80);
+  ellipse(650, 120, 100, 70);
+}
+
+function drawBirds() {
+  noFill();
+  stroke(0);
+  strokeWeight(2);
+
+  // Burung kiri
+  arc(birdX - 10, birdY, 20, 20, PI + QUARTER_PI, TWO_PI + QUARTER_PI);
+  arc(birdX + 10, birdY, 20, 20, PI + QUARTER_PI, TWO_PI + QUARTER_PI);
+
+  // Burung kanan
+  arc(birdX + 200 - 10, birdY - 50, 20, 20, PI + QUARTER_PI, TWO_PI + QUARTER_PI);
+  arc(birdX + 200 + 10, birdY - 50, 20, 20, PI + QUARTER_PI, TWO_PI + QUARTER_PI);
+}
+
+function moveBirds() {
+  birdX += 2; // Gerakan burung ke kanan
+  if (birdX > width) {
+    birdX = -50; // Kembali ke kiri setelah keluar layar
+  }
+}
